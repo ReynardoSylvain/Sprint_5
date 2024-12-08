@@ -4,14 +4,11 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from locators import LoginPageLocators
 from locators import MainPageLocators
-import time
+from urls import URLS
+import pytest
 
-def test_navigation_to_personal_account_and_logo():
-    driver = webdriver.Chrome()
-    driver.implicitly_wait(5)
-
-    try:
-        driver.get("https://stellarburgers.nomoreparties.site/")
+def test_navigation_to_personal_account_and_logo(driver):
+        driver.get(URLS.homepage)
 
         login_button = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(LoginPageLocators.LOGIN_BUTTON_MAIN_PAGE)
@@ -19,12 +16,13 @@ def test_navigation_to_personal_account_and_logo():
         login_button.click()
 
         WebDriverWait(driver, 10).until(
-            EC.url_contains("login")
+            EC.url_to_be(URLS.loginpage)
         )
 
         email_field = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.NAME, "name"))
         )
+
         password_field = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.NAME, "Пароль"))
         )
@@ -38,7 +36,7 @@ def test_navigation_to_personal_account_and_logo():
         login_submit_button.click()
 
         WebDriverWait(driver, 10).until(
-            EC.url_contains("/")
+            EC.url_to_be(URLS.homepage)
         )
 
         personal_account_button = WebDriverWait(driver, 10).until(
@@ -46,7 +44,6 @@ def test_navigation_to_personal_account_and_logo():
         )
         personal_account_button.click()
 
-        time.sleep(2)
 
         logo_button = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(MainPageLocators.LOGO_BUTTON)
@@ -54,13 +51,6 @@ def test_navigation_to_personal_account_and_logo():
         logo_button.click()
 
         WebDriverWait(driver, 10).until(
-            EC.url_contains("/")
+            EC.url_to_be(URLS.homepage)
         )
-        time.sleep(5)
 
-        print("Тест: Переход в личный кабинет и клик по логотипу пройден успешно.")
-
-    finally:
-        driver.quit()
-
-test_navigation_to_personal_account_and_logo()

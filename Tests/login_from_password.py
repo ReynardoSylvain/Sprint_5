@@ -1,17 +1,12 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from locators import LoginPageLocators
-import time
+from urls import URLS
 
-def test_login_from_password_recovery_form():
-    driver = webdriver.Chrome()
-    driver.implicitly_wait(5)
 
-    try:
-        # 1. Открываем страницу восстановления пароля
-        driver.get("https://stellarburgers.nomoreparties.site/forgot-password")
+def test_login_from_password_recovery_form(driver):
+        driver.get(URLS.forgotpasspage)
 
         # 2. Находим кнопку Войти в форме восстановления пароля
         recovery_login_button = WebDriverWait(driver, 20).until(
@@ -23,7 +18,7 @@ def test_login_from_password_recovery_form():
 
         # 4. Ожидаем, что мы окажемся на странице входа
         WebDriverWait(driver, 10).until(
-            EC.url_contains("login")
+            EC.url_to_be(URLS.loginpage)
         )
 
         # 5. Проверяем наличие полей для ввода email и пароля
@@ -43,12 +38,3 @@ def test_login_from_password_recovery_form():
             EC.element_to_be_clickable(LoginPageLocators.LOGIN_BUTTON)
         )
         login_submit_button.click()
-
-        time.sleep(2)
-
-        print("Тест: Вход через кнопку 'Войти' в форме восстановления пароля пройден успешно.")
-
-    finally:
-        driver.quit()
-
-test_login_from_password_recovery_form()

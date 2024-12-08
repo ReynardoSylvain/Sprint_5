@@ -1,17 +1,12 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from locators import LoginPageLocators
-import time
+from urls import URLS
 
-def test_navigation_to_personal_account():
-    driver = webdriver.Chrome()
-    driver.implicitly_wait(5)
-
-    try:
+def test_navigation_to_personal_account(driver):
         # 1) Открываем главную страницу
-        driver.get("https://stellarburgers.nomoreparties.site/")
+        driver.get(URLS.homepage)
 
         # 2) Находит кнопку "Войти в аккаунт" на главной странице и кликаем по ней
         login_button = WebDriverWait(driver, 10).until(
@@ -44,7 +39,7 @@ def test_navigation_to_personal_account():
 
         # 7) После авторизации проверяет, что вернулись на главную страницу
         WebDriverWait(driver, 10).until(
-            EC.url_contains("/")
+            EC.url_to_be(URLS.homepage)
         )
 
         # 8) Находит кнопку Личный Кабинет и кликаем по ней
@@ -53,11 +48,3 @@ def test_navigation_to_personal_account():
         )
         personal_account_button.click()
 
-        time.sleep(5)
-
-        print("Тест: Переход в личный кабинет пройден успешно.")
-
-    finally:
-        driver.quit()
-
-test_navigation_to_personal_account()

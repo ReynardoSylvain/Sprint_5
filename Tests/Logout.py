@@ -1,16 +1,11 @@
-from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from locators import LoginPageLocators
-import time
+from urls import URLS
 
-def test_navigation_to_personal_account_and_logout():
-    driver = webdriver.Chrome()
-    driver.implicitly_wait(5)
-
-    try:
-        driver.get("https://stellarburgers.nomoreparties.site/")
+def test_navigation_to_personal_account_and_logout(driver):
+        driver.get(URLS.homepage)
 
         login_button = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(LoginPageLocators.LOGIN_BUTTON_MAIN_PAGE)
@@ -18,7 +13,7 @@ def test_navigation_to_personal_account_and_logout():
         login_button.click()
 
         WebDriverWait(driver, 10).until(
-            EC.url_contains("login")
+            EC.url_to_be(URLS.loginpage)
         )
 
         email_field = WebDriverWait(driver, 10).until(
@@ -37,7 +32,7 @@ def test_navigation_to_personal_account_and_logout():
         login_submit_button.click()
 
         WebDriverWait(driver, 10).until(
-            EC.url_contains("/")
+            EC.url_to_be(URLS.homepage)
         )
 
         personal_account_button = WebDriverWait(driver, 10).until(
@@ -52,12 +47,5 @@ def test_navigation_to_personal_account_and_logout():
         logout_button.click()
 
         WebDriverWait(driver, 10).until(
-            EC.url_contains("login")
+            EC.url_to_be(URLS.loginpage)
         )
-        time.sleep(3)
-        print("Тест: Выход из личного кабинета пройден успешно.")
-
-    finally:
-        driver.quit()
-
-test_navigation_to_personal_account_and_logout()
