@@ -1,12 +1,10 @@
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from locators import ConstructorLocators
-from urls import URLS
 
 
 class TestConstructorSections:
     def test_navigate_to_toppings(self,driver):
-        driver.get(URLS.homepage)
         driver.find_element(*ConstructorLocators.TOPPINGS_BUTTON).click()
         header_toppings = driver.find_element(*ConstructorLocators.TOPPINGS_HEADER)
         assert header_toppings.text == 'Начинки'

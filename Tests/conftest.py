@@ -1,9 +1,10 @@
 import pytest
 from selenium import webdriver
+from urls import URLS
 
 @pytest.fixture
 def driver():
     browser = webdriver.Chrome()
-    browser.get("https://stellarburgers.nomoreparties.site/")
+    browser.get(URLS.homepage)
     yield browser
     browser.quit()

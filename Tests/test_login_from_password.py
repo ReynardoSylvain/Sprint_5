@@ -4,8 +4,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from locators import LoginPageLocators
 from urls import URLS
 
-
-def test_login_from_password_recovery_form(driver):
+class TestLoginFromPasswordRecoveryPage:
+    def test_login_from_password_recovery_form(self,driver):
         driver.get(URLS.forgotpasspage)
 
         # 2. Находим кнопку Войти в форме восстановления пароля
@@ -38,3 +38,8 @@ def test_login_from_password_recovery_form(driver):
             EC.element_to_be_clickable(LoginPageLocators.LOGIN_BUTTON)
         )
         login_submit_button.click()
+
+        WebDriverWait(driver, 10).until(
+            EC.url_to_be(URLS.homepage)
+        )
+        assert driver.current_url == URLS.homepage, f"Ожидался URL {URLS.homepage}, а получен {driver.current_url}"

@@ -4,9 +4,8 @@ from selenium.webdriver.support import expected_conditions as EC
 from locators import LoginPageLocators
 from urls import URLS
 
-def test_login_from_personal_account_button(driver):
-
-        driver.get(URLS.homepage)
+class TestLoginFromPersonalAccountButton:
+    def test_login_from_personal_account_button(self,driver):
 
         personal_account_button = WebDriverWait(driver, 10).until(
             EC.presence_of_element_located(LoginPageLocators.PERSONAL_ACCOUNT_BUTTON)
@@ -32,3 +31,8 @@ def test_login_from_personal_account_button(driver):
             EC.element_to_be_clickable(LoginPageLocators.LOGIN_BUTTON)
         )
         login_submit_button.click()
+
+        WebDriverWait(driver, 10).until(
+            EC.url_to_be(URLS.homepage)
+        )
+        assert driver.current_url == URLS.homepage, f"Ожидался URL {URLS.homepage}, а получен {driver.current_url}"
